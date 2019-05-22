@@ -1,7 +1,7 @@
 const bcrypt = require('bcrypt');
 const UserModel = require('../model/user');
 
-/*
+/**
  * 注册用户
  */
 const reg = (req, res) => {
@@ -27,6 +27,44 @@ const reg = (req, res) => {
     })
 }
 
+/**
+ * 用户登录
+ */
+const login = (req, res) => {
+  // 得到用户名，去查询一下数据库，是否存在，如果存在说明可以下一步，
+  // 否则直接用户名错误。
+  let username = req.body.username;
+  let password = req.body.password;
+  UserModel.findOne({ username: username }).then(data => {
+    // 如果存在，data 会是找到的那个对象，
+    // 否则会是 null;
+    if (!data) {
+      res.send({
+        code: -1,
+        msg: '用户名错误'
+      })
+      return;
+    }
+
+    let pwd = data.password; // 数据库中存储的密码
+    let isOk = bcrypt.compareSync(password, pwd);
+    if (isOk) {
+      // 登录成功
+      res.send({
+        code: 0,
+        msg: '登录成功'
+      })
+    } else {
+      // 密码不正确
+      res.send({
+        code: -1,
+        msg: '密码错误'
+      })
+    }
+  })
+}
+
 module.exports = {
-  reg
+  reg,
+  login
 }
