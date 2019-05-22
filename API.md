@@ -13,6 +13,7 @@
 | username | String | Y | 用户名 |
 | password | String | Y | 密码 |
 | sex | Number | N | 性别 |
+| nickname | String | N | 用户昵称 |
 | avatar | String | N | 用户头像 |
 | admin | Number | N | 是否是管理员 |
 
