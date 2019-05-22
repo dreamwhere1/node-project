@@ -17,6 +17,6 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.resolve(__dirname, './public')));
 
 
-app.use('/user', userRouter);
+app.use('/api', userRouter);
 
 app.listen(3000);
