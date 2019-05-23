@@ -9,22 +9,34 @@ const reg = (req, res) => {
     password: bcrypt.hashSync(req.body.password, 10)
   })
 
-  // req.body.password = bcrypt.hashSync(req.body.password);
-  let user = new UserModel(body);
-  user.save()
-    .then(() => {
-      res.send({
-        code: 0,
-        msg: 'ok'
-      })
-    })
-    .catch(err => {
-      console.log(err.message);
+  // 1. 先对用户是否存在做一个判断
+  UserModel.findOne({ username: req.body.username }).then(data => {
+    if (data) {
+      // 存在，已存在用户
       res.send({
         code: -1,
-        msg: 'err'
+        msg: '用户名已注册'
       })
-    })
+    } else {
+      // 注册
+      // req.body.password = bcrypt.hashSync(req.body.password);
+      let user = new UserModel(body);
+      user.save()
+        .then(() => {
+          res.send({
+            code: 0,
+            msg: 'ok'
+          })
+        })
+        .catch(err => {
+          console.log(err.message);
+          res.send({
+            code: -1,
+            msg: 'err'
+          })
+        })
+    }
+  })
 }
 
 /**
