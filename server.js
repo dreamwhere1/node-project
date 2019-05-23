@@ -17,6 +17,14 @@ app.use(express.urlencoded({ extended: false }));
 // 静态资源托管
 app.use(express.static(path.resolve(__dirname, './public')));
 
+// 设置所有的请求都加上一个响应头，来让他允许跨域
+app.use((req, res, next) => {
+  // 响应头设置
+  res.set('Access-Control-Allow-Origin', '*');
+
+  next();
+})
+
 
 app.use('/api', [userRouter, studentRouter]);
 
