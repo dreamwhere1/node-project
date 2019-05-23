@@ -4,6 +4,7 @@ const app = express();
 
 // 引入所有抽离出去的路由文件
 const userRouter = require('./routes/user');
+const studentRouter = require('./routes/student');
 
 // 设置模板引擎与模板页面的路径
 app.set('views', path.resolve(__dirname, 'views'));
@@ -17,6 +18,6 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.resolve(__dirname, './public')));
 
 
-app.use('/api', userRouter);
+app.use('/api', [userRouter, studentRouter]);
 
 app.listen(3000);
